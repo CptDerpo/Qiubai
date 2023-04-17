@@ -1,7 +1,7 @@
 # Qiubai
 Verification of combinational and sequential circuits in LEAN3
 
-### Column Name
+### TODO
 - [ ] Full-adder 
   - [ ] Implementation on single boolean  
   - [ ] Specification on single boolean  
@@ -14,7 +14,7 @@ Verification of combinational and sequential circuits in LEAN3
   - [ ] Specification on n-bit wide booleans
   - [ ] Lemma on n-bit wide booleans
 
-### Completed Column ✓
+### Completed ✓
 - [x] Logic Gates on single booleans
 - [x] 2to1 Mux
   - [x] Implementation on single boolean
