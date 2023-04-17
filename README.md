@@ -13,18 +13,20 @@ Verification of combinational and sequential circuits in LEAN3
   - [ ] Implementation on n-bit wide booleans  
   - [ ] Specification on n-bit wide booleans
   - [ ] Lemma on n-bit wide booleans
-  
+
 ### Completed Column ✓
 - [x] Logic Gates on single booleans
-- [x] 2to1 Mux Implementation on single boolean
-- [x] 2to1 Mux Specification on single boolean
-- [x] 2to1 Mux Lemma on single booleans
-- [x] 2to1 Mux Implementation on n-bit wide booleans
-- [x] 2to1 Mux Specification on n-bit wide booleans
-- [x] 2to1 Mux Lemma on n-bit wide booleans
-- [x] Memory Implementation single boolean
-- [x] Memory Specification single boolean
-- [x] Memory Lemma single boolean
-- [x] Memory Implementation n-bit wide booleans
-- [x] Memory Specification n-bit wide booleans
-- [x] Memory Lemma n-bit wide booleans
+- [x] 2to1 Mux
+  - [x] Implementation on single boolean
+  - [x] Specification on single boolean
+  - [x] Lemma on single booleans
+  - [x] Implementation on n-bit wide booleans
+  - [x] Specification on n-bit wide booleans
+  - [x] Lemma on n-bit wide booleans
+- [x] Memory
+  - [x] Implementation single boolean
+  - [x] Specification single boolean
+  - [x] Lemma single boolean
+  - [x] Implementation n-bit wide booleans
+  - [x] Specification n-bit wide booleans
+  - [x] Lemma n-bit wide booleans
