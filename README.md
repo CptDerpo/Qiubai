@@ -13,6 +13,7 @@ Verification of combinational and sequential circuits in LEAN3
   - [ ] Implementation on n-bit wide booleans  
   - [ ] Specification on n-bit wide booleans
   - [ ] Lemma on n-bit wide booleans
+- [ ] Instruction decoder for 8-bit ISA
 
 ### Completed ✓
 - [x] Logic Gates on single booleans
@@ -24,9 +25,9 @@ Verification of combinational and sequential circuits in LEAN3
   - [x] Specification on n-bit wide booleans
   - [x] Lemma on n-bit wide booleans
 - [x] Memory
-  - [x] Implementation single boolean
-  - [x] Specification single boolean
-  - [x] Lemma single boolean
-  - [x] Implementation n-bit wide booleans
-  - [x] Specification n-bit wide booleans
-  - [x] Lemma n-bit wide booleans
+  - [x] Implementation on single boolean
+  - [x] Specification on single boolean
+  - [x] Lemma on single boolean
+  - [x] Implementation on n-bit wide booleans
+  - [x] Specification on n-bit wide booleans
+  - [x] Lemma on n-bit wide booleans
