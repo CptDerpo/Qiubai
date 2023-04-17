@@ -10,7 +10,7 @@ def mux_spec (in1 in2 sel out : bool) : Prop :=
 
 --2to1 mux with n-bit inputs
 def mux_n_spec {n : ℕ} (in1 in2 : array n bool) (sel : bool) (out : array n bool) : Prop :=
-	∀ i : fin n, if sel then (out.read i = in2.read i) else (out.read i = in1.read i) 
+	∀ i : fin n, mux_spec (in1.read i) (in2.read i) sel (out.read i) 
 
 def mux_n_imp {n : ℕ} (in1 in2 : array n bool) (sel : bool) (out : array n bool) : Prop :=
 	∀ i : fin n, mux_imp (in1.read i) (in2.read i) sel (out.read i)
