@@ -24,7 +24,7 @@ def n_mem_imp {n : ℕ} (I : array n bool) (D : sig_n n) (S : signal) : sig_n n
 def n_mem_spec {n : ℕ} (D : sig_n n) (S : signal) (M: sig_n n): Prop :=
   ∀ t : ℕ,
     (S t = tt → M (nat.succ t) = D t) ∧  --frame 1 D S M+1
-    ( S t = ff → M (nat.succ t) = M t) --frame 2 S M M+1
+    (S t = ff → M (nat.succ t) = M t) --frame 2 S M M+1
 
 def ncounter_spec {n : ℕ} (out : sig_n n) (res : signal) : Prop :=
   ∀ t : ℕ, 

@@ -16,6 +16,7 @@ def not_ (a : bool) (out : bool) : bool :=
 
 def and_n (a : list bool) (out : bool) : bool :=
   out = AND a
+ 
 
 def nand_n (a : list bool) (out : bool) : bool :=
   out = ¬AND a

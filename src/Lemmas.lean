@@ -37,8 +37,8 @@ lemma n_mem_imp_complies_to_spec {n : ℕ} (D : sig_n n) (S: signal):
     {
       intros h,
       unfold n_mem_imp,
-      simp,
-      intro h',
+      simp, --rewrite if_pos,
+      intro h', -- exact h, (completed)
       exfalso,
       rewrite h at h',
       simp at h',
@@ -81,7 +81,77 @@ begin
   }
 end
 
-theorem dec_correct : ∀ in0 in1 out0 out1 out2 out3, 
+
+lemma mux_n_correct {n : ℕ} (in1 in2 : array n bool) (sel : bool) (out : array n bool) :
+	mux_n_imp in1 in2 sel out ↔ mux_n_spec in1 in2 sel out :=
+begin
+	unfold mux_n_imp mux_n_spec mux_imp nand_n not_ AND,
+	simp,
+	split,
+	{
+		intros h i,
+		cases sel; simp,
+		{
+			have h1 := h i,
+			cases in1.read i; simp at h1,
+			{
+				exact h1,
+			},
+			{
+				exact h1,
+			}
+		},
+		{
+			have h1 := h i,
+			cases in2.read i; simp at h1,
+			{
+				exact h1,
+			},
+			{
+				exact h1,
+			}
+		}
+	},
+	{
+		intros h i,
+		cases sel; simp,
+		{
+			have h1 := h i,
+			cases in1.read i; simp at h1,
+			{
+				right,
+				rw coe_sort_ff,
+				rw imp_self,
+				rw true_and,
+				exact h1,
+			},
+			{
+				left,
+				rw coe_sort_tt,
+				rw true_and,
+				exact h1,
+			}
+		},
+		{
+			have h1 := h i,
+			cases in2.read i; simp at h1,
+			{
+				right,
+				rw eq_self_iff_true,
+				rw true_and,
+				exact h1,				
+			},
+			{
+				left,
+				rw eq_self_iff_true,
+				rw true_and,
+				exact h1,
+			}
+		}
+	}
+end
+
+lemma dec_correct : ∀ in0 in1 out0 out1 out2 out3, 
 			dec_imp in0 in1 out0 out1 out2 out3 ↔ dec_spec in0 in1 out0 out1 out2 out3 :=
 begin
   intros in0 in1 out0 out1 out2 out3,
