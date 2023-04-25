@@ -27,3 +27,11 @@ def dec_spec (in0 in1 out0 out1 out2 out3 : bool) : Prop :=
 	else (out3 = tt ∧ out2 = ff ∧ out1 = ff ∧ out0 = ff)
 
 
+--full-adder
+def full_adder_imp (A B Cin : bool) (Sum Cout : bool) : Prop :=
+	∃ (p q r : bool), (xor_n [A, B] p) ∧ (xor_n [p, Cin] Sum) ∧ (and_n [Cin, p] q) ∧ (and_n [A, B] r)
+		∧ (or_n [q, r] Cout)
+
+def full_adder_spec (A B Cin : bool) (Sum Cout : bool) : Prop :=
+	Sum = nat_to_bool ((bool_to_nat A + bool_to_nat B + bool_to_nat Cin) % 2) ∧ 
+	Cout = ((bool_to_nat A + bool_to_nat B + bool_to_nat Cin) ≥ 2)
