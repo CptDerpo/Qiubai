@@ -98,41 +98,24 @@ lemma dec_correct : ∀ in0 in1 out0 out1 out2 out3,
     simp,
     split,
     {
-      cases in0; cases in1; simp *,
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      },
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      },
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      },
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      }
+      cases in0; cases in1; simp *; intros a b c d; simp*,
     },
     {
-      cases in0; cases in1; simp *,
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      },
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      },
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      },
-      {
-        intros a b c d,
-        cases a; cases b; cases c; cases d; simp,
-      }
+      cases in0; cases in1; simp *; intros a b c d; simp*,
+    }
+  end
+
+lemma full_adder_correct (A B Cin : bool) (Sum Cout : bool) :
+	full_adder_imp A B Cin Sum Cout ↔ full_adder_spec A B Cin Sum Cout :=
+  begin
+    split,
+    {
+
+      unfold full_adder_imp xor_n XOR or_n OR and_n AND full_adder_spec,
+      cases A; cases B; cases Cin; unfold bool_to_nat; simp; unfold nat_to_bool; intros h h1; simp*,
+    },
+    {
+      unfold full_adder_imp xor_n XOR or_n OR and_n AND full_adder_spec,
+      cases A; cases B; cases Cin; unfold bool_to_nat; simp; unfold nat_to_bool; intros h h1; simp*,
     }
   end
