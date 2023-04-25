@@ -9,14 +9,13 @@ def OR : list bool -> bool
 def XOR : list bool → bool
   | [] := false
   | [b] := b
-  | (h1::h2::t) := (h1 ≠ h2) ∧ XOR (h2::t)
+  | (h1::h2::t) := XOR ((h1 ≠ h2) :: t)
 
 def not_ (a : bool) (out : bool) : bool :=
   out = ¬a
 
 def and_n (a : list bool) (out : bool) : bool :=
   out = AND a
- 
 
 def nand_n (a : list bool) (out : bool) : bool :=
   out = ¬AND a
