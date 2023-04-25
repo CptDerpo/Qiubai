@@ -1,5 +1,13 @@
 import data.vector tactic
 
+def bool_to_nat : bool → ℕ 
+  | tt := 1
+  | ff := 0
+
+def nat_to_bool : ℕ → bool
+  | nat.zero := ff
+  | (nat.succ _) := tt
+
 def bool_list_to_nat : list bool → ℕ
   | [] := 0
   | (b :: bools) := if b then 2^(list.length bools) + bool_list_to_nat bools
