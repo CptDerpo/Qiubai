@@ -56,38 +56,40 @@ lemma n_mem_imp_complies_to_spec {n : ℕ} (D : sig_n n) (S: signal):
     }
   end
 
-lemma mux_correct : ∀ in1 in2 sel out, mux_imp in1 in2 sel out ↔ mux_spec in1 in2 sel out :=
+ lemma mux_complies_to_spec (in1 in2 sel: bool):
+  mux_spec in1 in2 sel (mux_imp in1 in2 sel) :=
   begin
-    intros in1 in2 sel out,
-    unfold mux_imp mux_spec nand_n AND not_,
-    split,
+    unfold mux_spec mux_imp,
+    cases sel,
     {
-      cases sel; simp,
-      { --sel FF
-        cases in1; simp,
-      },
-      { --sel TT
-        cases in2; simp,
-      }
+      unfold nand_n AND not_,
+      simp,
     },
     {
-      cases sel; simp,
-      {
-        cases in1; simp,
-      },
-      { 
-        cases in2; simp,
-      }
+      unfold nand_n AND not_,
+      simp,
     }
-  end
+  end 
 
-lemma mux_n_correct {n : ℕ} (in1 in2 : array n bool) (sel : bool) (out : array n bool) :
-	mux_n_imp in1 in2 sel out ↔ mux_n_spec in1 in2 sel out :=
+lemma mux_n_complies_to_spec {n : ℕ} (in1 in2 : array n bool) (sel : bool):
+	mux_n_spec in1 in2 sel (mux_n_imp in1 in2 sel) :=
   begin
-    unfold mux_n_imp mux_n_spec,
-    rw forall_congr,
-    intros a,
-    apply mux_correct,
+    unfold mux_n_imp mux_n_spec mux_imp zip_array,
+    cases sel,
+    {
+      unfold nand_n AND not_,
+      simp,
+      apply array.ext,
+      intros i,
+      apply array.read_map,
+    },
+    {
+      unfold nand_n AND not_,
+      simp,
+      apply array.ext,
+      intros i,
+      apply array.read_map,
+    }
   end
 
 lemma dec_correct : ∀ in0 in1 out0 out1 out2 out3, 
@@ -110,7 +112,6 @@ lemma full_adder_correct (A B Cin : bool) (Sum Cout : bool) :
   begin
     split,
     {
-
       unfold full_adder_imp xor_n XOR or_n OR and_n AND full_adder_spec,
       cases A; cases B; cases Cin; unfold bool_to_nat; simp; unfold nat_to_bool; intros h h1; simp*,
     },
