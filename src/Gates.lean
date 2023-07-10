@@ -1,111 +1,184 @@
 import tactic
 
-def AND_spec (A : list bool) (out : bool) : Prop :=
-  out = (∀ (a ∈ A), a = tt)
+--NOT
+def NOT_spec (A : bool) (OUT : bool) : Prop :=
+  OUT = ¬A
 
-def AND : list bool → bool
-  | [] := tt
-  | (h::t) := h ∧ AND t
-
-def OR_spec (A : list bool) (out : bool) : Prop :=
-  out = (∃ (a ∈ A), a = tt)
-
-def OR : list bool → bool
-  | [] := ff
-  | (h::t) := h ∨ OR t
-
-def XOR : list bool → bool
-  | [] := ff
-  | [b] := b
-  | (h1::h2::t) := XOR ((h1 ≠ h2) :: t)
-
-def count_tt : list bool → ℕ
-  | [] := 0
-  | (h::t) := (if h = tt then 1 else 0) + count_tt t
-
-def XOR_spec (A : list bool) (out : bool) : Prop :=
-  out = (count_tt A = 1)
-
-lemma XOR (tt :: tl_tl) = out ↔ out = to_bool (count_tt tl_tl = 0)
-
-theorem XOR_correct : ∀ (A : list bool), ∀ (out : bool),
-  XOR A = out ↔ XOR_spec A out:=
-begin
-  intros A out,
-  destruct A,
-  {
-    intros h,
-    unfold XOR XOR_spec,
-    rw h,
-    unfold count_tt XOR,
-    simp,
-    rw eq_comm,
-  },
-  {
-    intros,
-    induction tl generalizing A hd,
+theorem NOT_unique : ∀ (A : bool), ∃! (OUT : bool),
+  NOT_spec A OUT :=
+  begin
+    intros A,
+    apply exists_unique_of_exists_of_unique,
     {
-      sorry,
+      tauto,
     },
     {
-      unfold XOR XOR_spec,
-      rw a,
-      unfold XOR count_tt,
-      simp,
-      cases hd; cases tl_hd,
-      {
-        sorry,
-      },
-      {
-        simp,
-      }
+      intros y₁ y₂,
+      unfold NOT_spec,
+      intros h₁ h₂,
+      rw ←h₂ at h₁,
+      exact h₁,
     }
-
-    }
-  }
-end
-
-def NOT_spec (A : bool) (out : bool) : Prop :=
-  out = ¬A
+  end
 
 def NOT : bool → bool
   | tt := ff
   | ff := tt
 
-theorem OR_correct : ∀ (A : list bool), ∀ (out : bool),
-  OR A = out ↔ OR_spec A out:=
-begin
-  intros A out,
-  induction A,
-  { --base case
-    unfold OR OR_spec,
-    simp,
-    rw eq_comm,
-  },
-  { --inductive case
-    cases A_hd; cases A_tl; finish [OR, OR_spec],
-  }
-end
+theorem NOT_correct : ∀ (A : bool), ∀ (OUT : bool),
+  NOT A = OUT ↔ NOT_spec A OUT :=
+  begin
+    intros A OUT,
+    cases A; unfold NOT NOT_spec; tautology,
+  end
 
-lemma AND_correct : ∀ (A : list bool), ∀ (out : bool),
-  AND A = out ↔ AND_spec A out :=
-begin
-  intros A out,
-  
-  induction A,
-  { --base case
-    unfold AND AND_spec,
-    simp,
-    rw eq_comm,
-  },
-  { --inductive case
-    cases A_hd; cases A_tl; finish [AND, AND_spec],
-  }
-end
+--OR
+def OR_spec (A : list bool) (OUT : bool) : Prop :=
+  OUT = (∃ (a ∈ A), a = tt)
 
-lemma NOT_correct : ∀ (A : bool), ∀ (out : bool),
-  NOT A = out ↔ NOT_spec A out :=
-begin
-  intros A out,
-  cases A; unfold NOT NOT_spec; simp; rw eq_comm,
-end
+theorem OR_unique : ∀ (A : list bool), ∃! (OUT : bool),
+  OR_spec A OUT :=
+  begin
+    intros A,
+    apply exists_unique_of_exists_of_unique,
+    {
+      tauto,
+    },
+    {
+      intros y₁ y₂,
+      unfold OR_spec,
+      intros h₁ h₂,
+      rw ←h₂ at h₁,
+      exact h₁,
+    }
+  end
+
+def OR : list bool → bool
+  | [] := ff
+  | (h::t) := h ∨ OR t
+
+theorem OR_correct : ∀ (A : list bool), ∀ (OUT : bool),
+  OR A = OUT ↔ OR_spec A OUT:=
+  begin
+    intros A OUT,
+    induction A,
+    { --base case
+      unfold OR OR_spec,
+      simp,
+      rw eq_comm,
+    },
+    { --inductive case
+      cases A_hd; cases A_tl; finish [OR, OR_spec],
+    }
+  end
+
+--AND
+def AND_spec (A : list bool) (OUT : bool) : Prop :=
+  OUT = (∀ (a ∈ A), a = tt)
+
+def AND_unique : ∀ (A : list bool), ∃! (OUT : bool), 
+  AND_spec A OUT :=
+  begin
+    intros A,
+    apply exists_unique_of_exists_of_unique,
+    {
+      tauto,
+    },
+    {
+      intros y₁ y₂,
+      unfold AND_spec,
+      intros h₁ h₂,
+      rw ←h₂ at h₁,
+      exact h₁,
+    }
+  end
+
+def AND : list bool → bool
+  | [] := tt
+  | (h::t) := h ∧ AND t
+
+theorem AND_correct : ∀ (A : list bool), ∀ (OUT : bool),
+  AND A = OUT ↔ AND_spec A OUT :=
+  begin
+    intros A OUT,
+    induction A,
+    { --base case
+      unfold AND AND_spec,
+      simp,
+      rw eq_comm,
+    },
+    { --inductive case
+      cases A_hd; cases A_tl; finish [AND, AND_spec],
+    }
+  end
+
+
+--XOR
+def count_tt : list bool → ℕ
+  | [] := 0
+  | (h::t) := (if h = tt then 1 else 0) + count_tt t
+
+def XOR_spec (A : list bool) (OUT : bool) : Prop :=
+  OUT = ((count_tt A) % 2 = 1)
+
+theorem XOR_unique : ∀ (A : list bool), ∃! (OUT : bool),
+  XOR_spec A OUT :=
+  begin
+    intros A,
+    apply exists_unique_of_exists_of_unique,
+    {
+      tauto,
+    },
+    {
+      intros y₁ y₂,
+      unfold XOR_spec,
+      intros h₁ h₂,
+      rw ←h₂ at h₁,
+      exact h₁,
+    }
+  end
+
+def XOR : list bool → bool
+  | [] := ff
+  | [b] := b
+  | (h1::h2::t) := XOR((h1 ≠ h2) :: t)
+
+theorem XOR_correct : ∀ (A : list bool), ∀ (OUT : bool),
+  XOR A = OUT ↔ XOR_spec A OUT:=
+  begin
+    intros A OUT,
+    destruct A,
+    {
+      intros h,
+      unfold XOR XOR_spec,
+      rw h,
+      unfold count_tt XOR,
+      simp,
+      rw eq_comm,
+    },
+    {
+      intros,
+      induction tl generalizing A hd,
+      {
+        rw a,
+        cases hd;
+        {
+          unfold XOR XOR_spec count_tt,
+          simp,
+          rw eq_comm,
+        }
+      },
+      {
+        rw a,
+        unfold XOR count_tt,
+        cases hd; cases tl_hd;
+        {
+          simp at *,
+          unfold XOR_spec count_tt at *,
+          simp at *,
+          try {ring_nf, simp},
+          tautology,
+        }
+      }
+    }
+  end
