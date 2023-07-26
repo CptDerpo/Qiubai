@@ -1,17 +1,20 @@
-import Gates Conversions Tactic
+import Gates Tactic Utility
 
 --Generic specification of a 2_to_1 Multiplexer
 def mux_spec {α : Type} (IN0 IN1 : α) (SEL : bool) (OUT : α) : Prop :=
 	if SEL then (OUT = IN1) else (OUT = IN0) 
 
---Proof to show there exists a feasable implementation
-theorem mux_spec_unique : ∀ (IN0 IN1 SEL: bool),
+--
+theorem mux_unique : ∀ (IN0 IN1 SEL: bool),
   ∃! (out : bool), mux_spec IN0 IN1 SEL out :=
   begin
     intros IN0 IN1 SEL,
     apply exists_unique_of_exists_of_unique,
     { --existence of output
-      cases SEL; tauto,
+      cases SEL;
+      {
+        exact exists_eq,
+      }
     },
     { --uniqueness of output
       intros y₁ y₂,
@@ -53,7 +56,7 @@ theorem mux_correct : ∀ (IN0 IN1 SEL: bool),
   end
 
 --Proof
-theorem n_mux_correct {n : ℕ} : ∀ (IN0 IN1 : array n bool) (SEL : bool),
+theorem mux_n_correct {n : ℕ} : ∀ (IN0 IN1 : array n bool) (SEL : bool),
 	∀ (OUT : array n bool), mux_spec IN0 IN1 SEL OUT ↔ (mux_n_imp IN0 IN1 SEL) = OUT :=
   begin
     intros IN0 IN1 SEL OUT,

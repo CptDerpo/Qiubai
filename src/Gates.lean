@@ -10,7 +10,7 @@ theorem NOT_unique : ∀ (A : bool), ∃! (OUT : bool),
     intros A,
     apply exists_unique_of_exists_of_unique,
     {
-      tauto,
+      exact exists_eq,
     },
     {
       intros y₁ y₂,
@@ -127,7 +127,7 @@ theorem XOR_unique : ∀ (A : list bool), ∃! (OUT : bool),
     intros A,
     apply exists_unique_of_exists_of_unique,
     {
-      tauto,
+      exact exists_eq,
     },
     {
       intros y₁ y₂,
@@ -154,7 +154,7 @@ theorem XOR_correct : ∀ (A : list bool), ∀ (OUT : bool),
       rw h,
       unfold count_tt XOR,
       simp,
-      rw eq_comm,
+      exact eq_comm,
     },
     {
       intros,
