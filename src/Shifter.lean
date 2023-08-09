@@ -1,33 +1,33 @@
 import Utility
 
-def shft_spec (A : array 4 bool) (D : bool) (OUT : array 4 bool) : Prop :=
-  if D = tt then OUT = ⟨λ i, if h : i.val > 0 ∧ i.val - 1 < 4 then A.read ⟨i.val - 1, h.right⟩ else ff⟩
-            else OUT = ⟨λ i, if h : i.val + 1 < 4 then A.read ⟨i.val + 1, h⟩ else ff⟩
+def shft_spec {n : ℕ} (A : array n bool) (D : bool) (OUT : array n bool) : Prop :=
+  if D = tt then OUT = ⟨λ i, if h : i.val > 0 ∧ i.val - 1 < n then A.read ⟨i.val - 1, h.right⟩ else ff⟩
+            else OUT = ⟨λ i, if h : i.val + 1 < n then A.read ⟨i.val + 1, h⟩ else ff⟩
 
-theorem shft_unique  : ∀ (A : array 4 bool) (D : bool),
-	∃! (OUT : array 4 bool), shft_spec A D OUT :=
-begin
-	intros A D,
-	apply exists_unique_of_exists_of_unique,
-	{
-    unfold shft_spec,
-    cases D;
+theorem shft_unique {n : ℕ} : ∀ (A : array n bool) (D : bool),
+	∃! (OUT : array n bool), shft_spec A D OUT :=
+  begin
+    intros A D,
+    apply exists_unique_of_exists_of_unique,
     {
-      exact exists_eq,
-    }
-	},
-	{
-		intros y₁ y₂,
-		unfold shft_spec,
-		intros h₁ h₂,
-    cases D;
+      unfold shft_spec,
+      cases D;
+      {
+        exact exists_eq,
+      }
+    },
     {
-      simp at h₁ h₂,
-      rewrite ←h₂ at h₁,
-      exact h₁,
+      intros y₁ y₂,
+      unfold shft_spec,
+      intros h₁ h₂,
+      cases D;
+      {
+        simp at h₁ h₂,
+        rewrite ←h₂ at h₁,
+        exact h₁,
+      }
     }
-	}
-end
+  end
 
 def shft_imp (A : array 4 bool) (D : bool) : array 4 bool :=
   let D':= NOT D,
@@ -39,11 +39,10 @@ def shft_imp (A : array 4 bool) (D : bool) : array 4 bool :=
       u := AND [D', A.read 3] in
   [q, OR[p, s], OR[r, u], t].to_array
 
-
-theorem shft_correct : ∀ (A : array 4 bool) (D : bool) (OUT : array 4 bool),
+theorem shft_correct : ∀ (A : array 4 bool) (D : bool),
   shft_spec A D (shft_imp A D) :=
   begin
-    intros A D OUT,
+    intros A D,
     unfold shft_spec,
     simp,
     cases D;

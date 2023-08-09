@@ -1,10 +1,8 @@
 import Gates Tactic Utility
 
---Generic specification of a 2_to_1 Multiplexer
 def mux_spec {α : Type} (IN0 IN1 : α) (SEL : bool) (OUT : α) : Prop :=
 	if SEL then (OUT = IN1) else (OUT = IN0) 
 
---
 theorem mux_unique : ∀ (IN0 IN1 SEL: bool),
   ∃! (out : bool), mux_spec IN0 IN1 SEL out :=
   begin
@@ -29,18 +27,14 @@ theorem mux_unique : ∀ (IN0 IN1 SEL: bool),
     }
   end
 
---Implementation of a 1-bit 2-to-1 Multiplexer
-def mux_imp (in1 in2 sel : bool) : bool :=
+def mux_imp (IN0 IN1 sel : bool) : bool :=
 	let p := NOT sel,
-			q := AND [in1, p],
-			r := AND [in2, sel] in
+			q := AND [IN0, p],
+			r := AND [IN1, sel] in
 	(OR [q, r])
 
---Implementation of a n-bit 2-to-1 Multiplexer
-def mux_n_imp {n : ℕ} (in1 in2 : array n bool) (sel : bool) : array n bool :=
-  (zip_array in1 in2).map (λ x, mux_imp x.fst x.snd sel)
-
---Proof
+def mux_n_imp {n : ℕ} (IN0 IN1 : array n bool) (sel : bool) : array n bool :=
+  (zip_array IN0 IN1).map (λ x, mux_imp x.fst x.snd sel)
 theorem mux_correct : ∀ (IN0 IN1 SEL: bool),
   ∀ (OUT : bool), mux_spec IN0 IN1 SEL OUT ↔ (mux_imp IN0 IN1 SEL) = OUT :=
   begin
@@ -55,7 +49,6 @@ theorem mux_correct : ∀ (IN0 IN1 SEL: bool),
     },
   end
 
---Proof
 theorem mux_n_correct {n : ℕ} : ∀ (IN0 IN1 : array n bool) (SEL : bool),
 	∀ (OUT : array n bool), mux_spec IN0 IN1 SEL OUT ↔ (mux_n_imp IN0 IN1 SEL) = OUT :=
   begin

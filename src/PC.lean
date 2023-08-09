@@ -7,11 +7,11 @@ def pc_spec {n : ℕ} (R : signal) (O : sig_n n) : Prop :=
 
 def pc_imp {n : ℕ} (I : array n bool) (R : signal) : sig_n n
   | nat.zero := I
-  | (nat.succ y) := if R y = tt then I
+  | (nat.succ y) := if R y = tt then mk_array n ff
                     else (full_n_adder_imp (pc_imp y) (mk_array n ff) (tt)).fst
 
 theorem pc_correct {n : ℕ} : ∀ (R : signal) (I : array n bool),
-  pc_spec R (pc_imp (mk_array n ff) R) :=
+  pc_spec R (pc_imp (I) R) :=
   begin
     intros,
     unfold pc_spec,

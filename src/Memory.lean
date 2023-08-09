@@ -30,14 +30,33 @@ lemma almost_eq_equiv {α : Type} (N M : stream α) : almost_eq N M ↔ almost_e
       }
     },
     {
-      sorry, --almost_eq too strong
+      intros h t,
+      specialize h t,
+      intros h₁ t' ht',
+      specialize h,
+      
+      cases t',
+      {
+        finish,
+      },
+      {
+        cases ht' with,
+        {
+          finish,
+        },
+        {
+          finish,
+        }
+        
+      }
     }
   end
 
 theorem mem_spec_almost_unique {α : Type} : ∀ (D : stream α) (S : signal) (M : stream α),
-  mem_spec D S M → ∀(N : stream α), mem_spec D S N → almost_eq' N M :=
+  mem_spec D S M → ∀(N : stream α), mem_spec D S N → almost_eq N M :=
   begin
     intros D S M h₁ N h₂,
+    rw almost_eq_equiv,
     unfold almost_eq',
     intros t heq,
     unfold mem_spec at h₁ h₂,
@@ -83,27 +102,20 @@ theorem mem_correct : ∀ (D S : signal), ∀ (I : bool),
     {
       intros h,
       unfold mem_imp,
-      simp,
-      intro h',
-      exfalso,
-      rewrite h at h',
-      simp at h',
-      assumption,
+      rw if_pos,
+      exact h,
     },
     {
       intros h,
       unfold mem_imp,
+      rw if_neg,
       simp,
-      intro h',
-      exfalso,
-      rewrite h at h',
-      simp at h',
-      assumption,
+      exact h,
     }
   end
 
-theorem mem_n_correct {n : ℕ} : ∀ (D : sig_n n) (S: signal),
-  mem_spec D S (mem_n_imp (mk_array n ff) D S) :=
+theorem mem_n_correct {n : ℕ} : ∀ (D : sig_n n) (S: signal), ∀ (I : array n bool),
+  mem_spec D S (mem_n_imp (I) D S) :=
   begin
     unfold mem_spec,
     intros,
@@ -111,22 +123,15 @@ theorem mem_n_correct {n : ℕ} : ∀ (D : sig_n n) (S: signal),
     {
       intros h,
       unfold mem_n_imp,
-      simp, --rewrite if_pos,
-      intro h', -- exact h,
-      exfalso,
-      rewrite h at h',
-      simp at h',
-      assumption,
+      rw if_pos,
+      exact h,
     },
     {
       intros h,
       unfold mem_n_imp,
+      rw if_neg,
       simp,
-      intro h',
-      exfalso,
-      rewrite h at h',
-      simp at h',
-      assumption,
-    },
+      exact h,
+    }
   end
 

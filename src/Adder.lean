@@ -4,14 +4,13 @@ def full_adder_spec (A B Cin Sum Cout : bool) : Prop :=
 	Sum = nat_to_bool ((bool_to_nat A + bool_to_nat B + bool_to_nat Cin) % 2) ∧ --sum
 	Cout = ((bool_to_nat A + bool_to_nat B + bool_to_nat Cin) ≥ 2) --carry out
 
-theorem full_adder_unique : ∀ (A B CIN : bool), ∃!(SUM : bool), ∃(COUT : bool),
+theorem full_adder_unique : ∀ (A B CIN : bool), ∃!(SUM COUT : bool),
   full_adder_spec A B CIN SUM COUT :=
   begin
     intros A B CIN,
     apply exists_unique_of_exists_of_unique,
     {
       unfold full_adder_spec,
-      simp,
       cases A; cases B; cases CIN;
       {
         unfold bool_to_nat nat_to_bool,
@@ -23,8 +22,10 @@ theorem full_adder_unique : ∀ (A B CIN : bool), ∃!(SUM : bool), ∃(COUT : b
     {
       intros y₁ y₂,
       unfold full_adder_spec,
-      simp,
       intros h₁ h₂,
+      destruct h₁,
+      destruct h₂,
+      simp,
       finish,
     }
   end
@@ -59,26 +60,16 @@ def full_n_adder_spec {n : ℕ} (A B : array n bool) (Cin : bool) (Sum : array n
 		bool_arr_to_nat Sum = ((bool_arr_to_nat A + bool_arr_to_nat B + bool_to_nat Cin) % 2^n) ∧
 		Cout = ((bool_arr_to_nat A + bool_arr_to_nat B + bool_to_nat Cin) ≥ 2^n)
 
-theorem full_n_adder_unique {n : ℕ} : ∀ (A B SUM : array n bool)(CIN : bool), ∃!(SUM : array n bool), ∃(COUT : bool),
-  full_n_adder_spec A B CIN SUM COUT :=
-  begin
-    intros A B SUM CIN,
-    apply exists_unique_of_exists_of_unique,
-    {
-      unfold full_n_adder_spec,
-      simp,
-      unfold bool_arr_to_nat,
-      simp,
-      sorry,
-    },
-    {
-      intros y₁ y₂,
-      unfold full_n_adder_spec,
-      simp,
-      intros h₁ h₂,
-      finish,
-    }
-  end
+theorem full_n_adder_correct {n : ℕ} : ∀ (A B : array n bool) (CIN : bool), 
+  ∀ (SUM : array n bool) (COUT : bool), 
+  full_n_adder_spec A B CIN SUM COUT ↔ full_n_adder_imp A B CIN = (SUM, COUT) :=
+  begin 
+    sorry,
+  end 
+
+
+
+
 
 
 

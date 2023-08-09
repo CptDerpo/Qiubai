@@ -29,7 +29,12 @@ theorem NOT_correct : ∀ (A : bool), ∀ (OUT : bool),
   NOT A = OUT ↔ NOT_spec A OUT :=
   begin
     intros A OUT,
-    cases A; unfold NOT NOT_spec; tautology,
+    cases A;
+    {
+      unfold NOT NOT_spec,
+      simp,
+      exact eq_comm,
+    }
   end
 
 --OR
@@ -42,7 +47,7 @@ theorem OR_unique : ∀ (A : list bool), ∃! (OUT : bool),
     intros A,
     apply exists_unique_of_exists_of_unique,
     {
-      tauto,
+      exact exists_eq,
     },
     {
       intros y₁ y₂,
