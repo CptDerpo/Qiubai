@@ -29,12 +29,7 @@ theorem NOT_correct : ∀ (A : bool), ∀ (OUT : bool),
   NOT A = OUT ↔ NOT_spec A OUT :=
   begin
     intros A OUT,
-    cases A;
-    {
-      unfold NOT NOT_spec,
-      simp,
-      exact eq_comm,
-    }
+    cases A; unfold NOT NOT_spec; simp; exact eq_comm,
   end
 
 --OR
@@ -81,13 +76,13 @@ theorem OR_correct : ∀ (A : list bool), ∀ (OUT : bool),
 def AND_spec (A : list bool) (OUT : bool) : Prop :=
   OUT = (∀ (a ∈ A), a = tt)
 
-def AND_unique : ∀ (A : list bool), ∃! (OUT : bool), 
+theorem AND_unique : ∀ (A : list bool), ∃! (OUT : bool), 
   AND_spec A OUT :=
   begin
     intros A,
     apply exists_unique_of_exists_of_unique,
     {
-      tauto,
+      exact exists_eq,
     },
     {
       intros y₁ y₂,

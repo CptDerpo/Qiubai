@@ -38,8 +38,7 @@ def fold_array_aux {n : ℕ} {α β γ δ: Type} (f : α → β → γ → (δ �
     fold_array_aux j (le_of_lt h) (acc.fst.write i sum, cout)
 
 def fold_array {n : ℕ} {α β γ δ : Type} (f : α → β → γ → (δ × γ)) (a : array n (α × β)) (i : array n δ × γ) : (array n δ × γ) :=
-  let acc := i in
-  fold_array_aux f a n (le_refl _) acc
+  fold_array_aux f a n (le_refl _) i
 
 
 lemma zip_unzip_eq {n : ℕ} {α β : Type} (a : array n α) (b : array n β) :

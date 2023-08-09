@@ -9,10 +9,7 @@ theorem mux_unique : ∀ (IN0 IN1 SEL: bool),
     intros IN0 IN1 SEL,
     apply exists_unique_of_exists_of_unique,
     { --existence of output
-      cases SEL;
-      {
-        exact exists_eq,
-      }
+      cases SEL; exact exists_eq,
     },
     { --uniqueness of output
       intros y₁ y₂,
