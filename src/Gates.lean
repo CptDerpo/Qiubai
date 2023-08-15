@@ -1,5 +1,21 @@
 import tactic
 
+def is_even (n : ℕ) : Prop := 
+  ∃ k, n = 2*k
+
+def is_even' : ℕ → Prop 
+  | n := ∃ k, n = 2*k
+
+theorem even_plus_even {a b : ℕ} (h1 : is_even a) (h2 : is_even b) : is_even (a + b) :=
+begin
+    cases h1 with k hk,
+    cases h2 with l hl,
+    existsi k + l,
+    rw hk,
+    rw hl,
+    rw mul_add,
+end
+
 --NOT
 def NOT_spec (A : bool) (OUT : bool) : Prop :=
   OUT = ¬A
